@@ -8,6 +8,8 @@
 #ifndef INTLIST_H_
 #define INTLIST_H_
 
+#include <memory>
+
 namespace dast {
 
 class IntList {
@@ -16,26 +18,23 @@ public:
 	IntList(int data);
 	virtual ~IntList();
 
-	const int& operator[](int idx) const;
+//	const int& operator[](int idx) const;
 	int size() const;
 
 	void push(int data);
 	int pop();
 
-	int getData() const {
-		return m_data;
-	}
-
-	void setData(int data) {
-		m_data = data;
-	}
 private:
-	IntList * getLastItem();
-	IntList * getItemBeforeLastItem();
-	void removeItem(IntList *item);
+	struct node {
+		int data;
+		std::shared_ptr<node> next;
+	};
 
-	int m_data;
-	IntList *m_next;
+	std::shared_ptr<node> m_payload;
+
+	std::shared_ptr<IntList::node> getLastItem();
+	//std::shared_ptr<node> getItemBeforeLastItem();
+	//void removeItem(IntList *item);
 };
 
 } /* namespace dast */

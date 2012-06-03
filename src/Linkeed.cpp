@@ -10,7 +10,7 @@
 #include "IntList.h"
 using namespace std;
 using namespace dast;
-
+/*
 void testPush() {
 	cout << "testPush()" << endl;
 	IntList uat(1);
@@ -52,11 +52,11 @@ void testSize() {
 
 	cout << uat.size() << endl;
 }
-
+*/
 int main() {
-	testPush();
-	testSubscript();
-	testSize();
+//	testPush();
+//	testSubscript();
+//	testSize();
 
 	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
 	return 0;

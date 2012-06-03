@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 2.8)
 project(linkeed_test)
+
 set(COMMON_INCLUDES ${PROJECT_SOURCE_DIR}/src)
+ADD_DEFINITIONS("-std=c++0x -g3") 
+
 add_subdirectory (src)
 ################################
 # GTest
@@ -15,6 +18,7 @@ include_directories(${gtest_SOURCE_DIR}/include
 ################################
 # Unit Tests
 ################################
+set( CTEST_OUTPUT_ON_FAILURE )
 
 add_executable( runUnitTests test.cc )
 # Link test executable against gtest & gtest_main

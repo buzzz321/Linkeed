@@ -11,88 +11,104 @@ using namespace std;
 
 namespace dast {
 
-IntList::IntList() :
-		m_data(0), m_next(0) {
-	// TODO Auto-generated constructor stub
+IntList::IntList() {
 
 }
 
 IntList::IntList(int data) :
-		m_data(data), m_next(0) {
-	// TODO Auto-generated constructor stub
-
+		m_payload(new node()) {
+	m_payload->data = data;
 }
 
 IntList::~IntList() {
-	// TODO Auto-generated destructor stub
-	delete m_next;
 }
 
 void IntList::push(int data) {
-	IntList *pek = getLastItem();
-	pek->m_next = new IntList(data);
+	cout << "IntList::push" << endl;
+
+	if (m_payload) {
+		shared_ptr<node> pek = getLastItem();
+
+		pek->next = shared_ptr<node>(new node());
+		pek->data = data;
+	} else {
+		m_payload = shared_ptr<node>(new node());
+		m_payload->data = data;
+	}
 }
 
 int IntList::pop() {
+	shared_ptr<node> pek = m_payload;
+	shared_ptr<node> prev = m_payload;
 	int retVal = 0;
-	if (m_next == 0) {
-		retVal = m_data;
-	} else {
-		IntList *pek = getItemBeforeLastItem();
 
-		retVal = pek->m_next->m_data;
-		removeItem(pek);
+	while (pek->next) {
+		cout << pek->data << endl;
+		prev = pek;
+		pek = pek->next;
+	}
+
+	if (pek) {
+		retVal = pek->data;
+		prev->next = shared_ptr<node>();
 	}
 	return retVal;
 }
 
-inline IntList* IntList::getLastItem() {
-	IntList *pek = this;
+inline shared_ptr<IntList::node> IntList::getLastItem() {
+	cout << "IntList::getLastItem" << endl;
+	shared_ptr<node> pek = m_payload;
 
-	while (pek->m_next != 0) {
-		pek = pek->m_next;
+	while (pek->next) {
+		pek = pek->next;
 	}
+
+	cout << "End IntList::getLastItem" << endl;
 	return pek;
 }
 
-inline IntList* IntList::getItemBeforeLastItem() {
-	IntList *pek = this;
+/*
+ inline std::shared_ptr<IntList::node> IntList::getItemBeforeLastItem() {
+ IntList *pek = this;
 
-	while (pek->m_next->m_next != 0) {
-		//cout << "pek=" << pek << endl;
-		pek = pek->m_next;
-	}
+ while (pek->m_next->m_next != 0) {
+ //cout << "pek=" << pek << endl;
+ pek = pek->m_next;
+ }
 
-	return pek;
-}
+ return pek;
+ }
 
-const int& IntList::operator [](int idx) const {
-	int index = 0;
-	const IntList *pek = this;
+ const int& IntList::operator [](int idx) const {
+ int index = 0;
+ const IntList *pek = this;
 
-	while (pek->m_next != 0 && index < idx) {
-		pek = pek->m_next;
-		index++;
-	}
+ while (pek->m_next != 0 && index < idx) {
+ pek = pek->m_next;
+ index++;
+ }
 
-	return pek->m_data;
-}
-
+ return pek->m_data;
+ }
+ */
 int IntList::size() const {
-	int index = 1;
-	const IntList *pek = this;
+	int index = 0;
+	shared_ptr<node> pek = m_payload;
 
-	while (pek->m_next != 0) {
-		pek = pek->m_next;
+	while (pek) {
+		cout << "pek=" << pek->data << endl;
 		index++;
+		pek = pek->next;
 	}
+
 	return index;
 }
-
-inline void IntList::removeItem(IntList* item) {
-	delete item->m_next;
-	item->m_next = 0;
-}
+/*
+ inline void IntList::removeItem(IntList* item) {
+ delete item->m_next;
+ item->m_next = 0;
+ }
+ */
 /* namespace dast */
 
 }
