@@ -11,7 +11,7 @@ using namespace std;
 
 namespace dast {
 
-IntList::IntList() {
+IntList::IntList(): m_payload(0) {
 
 }
 
@@ -24,13 +24,12 @@ IntList::~IntList() {
 }
 
 void IntList::push(int data) {
-	cout << "IntList::push" << endl;
 
 	if (m_payload) {
 		shared_ptr<node> pek = getLastItem();
 
 		pek->next = shared_ptr<node>(new node());
-		pek->data = data;
+		pek->next->data = data;
 	} else {
 		m_payload = shared_ptr<node>(new node());
 		m_payload->data = data;
@@ -43,7 +42,6 @@ int IntList::pop() {
 	int retVal = 0;
 
 	while (pek->next) {
-		cout << pek->data << endl;
 		prev = pek;
 		pek = pek->next;
 	}
@@ -56,59 +54,43 @@ int IntList::pop() {
 }
 
 inline shared_ptr<IntList::node> IntList::getLastItem() {
-	cout << "IntList::getLastItem" << endl;
 	shared_ptr<node> pek = m_payload;
 
 	while (pek->next) {
 		pek = pek->next;
 	}
 
-	cout << "End IntList::getLastItem" << endl;
 	return pek;
 }
 
-/*
- inline std::shared_ptr<IntList::node> IntList::getItemBeforeLastItem() {
- IntList *pek = this;
+const int& IntList::operator [](int idx) const {
+	int index = 0;
+	shared_ptr<node> pek = m_payload;
 
- while (pek->m_next->m_next != 0) {
- //cout << "pek=" << pek << endl;
- pek = pek->m_next;
- }
+	while (index < idx) {
+		pek = pek->next;
+		index++;
+	}
 
- return pek;
- }
+	return pek->data;
+}
 
- const int& IntList::operator [](int idx) const {
- int index = 0;
- const IntList *pek = this;
-
- while (pek->m_next != 0 && index < idx) {
- pek = pek->m_next;
- index++;
- }
-
- return pek->m_data;
- }
- */
 int IntList::size() const {
 	int index = 0;
 	shared_ptr<node> pek = m_payload;
 
 	while (pek) {
-		cout << "pek=" << pek->data << endl;
 		index++;
 		pek = pek->next;
 	}
 
 	return index;
 }
-/*
- inline void IntList::removeItem(IntList* item) {
- delete item->m_next;
- item->m_next = 0;
+
+ inline void IntList::removeItem(int index) {
+
  }
- */
+
 /* namespace dast */
 
 }

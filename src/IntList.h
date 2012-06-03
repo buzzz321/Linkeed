@@ -18,7 +18,7 @@ public:
 	IntList(int data);
 	virtual ~IntList();
 
-//	const int& operator[](int idx) const;
+	const int& operator[](int idx) const;
 	int size() const;
 
 	void push(int data);
@@ -33,8 +33,7 @@ private:
 	std::shared_ptr<node> m_payload;
 
 	std::shared_ptr<IntList::node> getLastItem();
-	//std::shared_ptr<node> getItemBeforeLastItem();
-	//void removeItem(IntList *item);
+	void removeItem(int index);
 };
 
 } /* namespace dast */
