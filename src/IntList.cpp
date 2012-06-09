@@ -24,16 +24,10 @@ IntList::~IntList() {
 }
 
 void IntList::push(int data) {
-
-	if (m_payload) {
 		shared_ptr<node> pek = getLastItem();
 
 		pek->next = shared_ptr<node>(new node());
 		pek->next->data = data;
-	} else {
-		m_payload = shared_ptr<node>(new node());
-		m_payload->data = data;
-	}
 }
 
 int IntList::pop() {
@@ -55,12 +49,14 @@ int IntList::pop() {
 
 inline shared_ptr<IntList::node> IntList::getLastItem() {
 	shared_ptr<node> pek = m_payload;
+	shared_ptr<node> prev = m_payload;
 
-	while (pek->next) {
-		pek = pek->next;
+	while (pek) {
+	  prev = pek;
+	  pek = pek->next;
 	}
 
-	return pek;
+	return prev;
 }
 
 const int& IntList::operator [](int idx) const {
